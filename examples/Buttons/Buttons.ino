@@ -1,6 +1,6 @@
 /*
     LF_Alpha Buttons Example
-    This example demonstrates how to initialize and use the LF_Alpha_M1 Buttons.
+    This example demonstrates how to initialize and use the LF_Alpha Buttons.
     available methods:
         -begin(upButton); Initializes the up button.
         -begin(upButton, downButton); Initializes the up and down buttons.
@@ -15,7 +15,7 @@ LF_Alpha_Buttons buttons;
 
 void setup(){
     Serial.begin(115200);
-    Serial.println("LF_Alpha_M1 Buttons Example");
+    Serial.println("LF_Alpha Buttons Example");
 
     // Initialize all the buttons
     buttons.begin(upButton, downButton, backButton, okayButton);

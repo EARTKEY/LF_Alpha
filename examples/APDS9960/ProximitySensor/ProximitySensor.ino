@@ -1,6 +1,6 @@
 /*
     LF_Alpha APDS9960 Proximity Sensor Example
-    This example shows how to use the proximity sensor on the LF_Alpha_M1.
+    This example shows how to use the proximity sensor on the LF_Alpha.
     available methods:
         -begin(); Initializes the proximity sensor.
         -enableProximity(); Enables the proximity sensor.
@@ -10,8 +10,6 @@
         -readProximity(); Reads the proximity data from the sensor.
         -clearInterrupt(); Clears the interrupt flag.
         -end(); De-initializes the proximity sensor.
-
-        Note: For more information and more methods refer the documentation.
 */
 
 #include <LF_Alpha.h>
@@ -23,7 +21,7 @@ void setup()
 {
     Serial.begin(115200);
     pinMode(APDSINT, INPUT_PULLUP);
-    Serial.println("LF_Alpha_M1 APDS9960 Proximity Sensor Example");
+    Serial.println("LF_Alpha APDS9960 Proximity Sensor Example");
 
     // Initialize the proximity sensor
     bool status = proximitySensor.begin();

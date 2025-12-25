@@ -1,6 +1,6 @@
 /*
     LF_Alpha DS3231 RTC Example
-    This example shows how to use the DS3231 RTC on the LF_Alpha_M1.
+    This example shows how to use the DS3231 RTC on the LF_Alpha.
     available methods:
         -begin(); Initializes the DS3231 RTC.
         -setDateTime(__DATE__, __TIME__); Sets the date and time of the DS3231 RTC.
@@ -24,7 +24,7 @@ LF_Alpha_RTC RTC;
 void setup()
 {
   Serial.begin(115200);
-  Serial.println("LF_Alpha_M1 DS3231 RTC Example");
+  Serial.println("LF_Alpha DS3231 RTC Example");
 
   // Initialize the DS3231 RTC
   bool status = RTC.begin();

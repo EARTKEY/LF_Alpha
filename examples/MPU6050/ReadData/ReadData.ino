@@ -1,6 +1,6 @@
 /*
     LF_Alpha MPU6050 Read Data Example
-    This example shows how to read data from the MPU6050 on the LF_Alpha_M1.
+    This example shows how to read data from the MPU6050 on the LF_Alpha.
     available methods:
         -begin(); Initializes the MPU6050.
         -calibrateSensor(); Calibrates the MPU6050 motion/idle threshold values.
@@ -25,7 +25,7 @@ LF_Alpha_MPU6050 mpuSensor;
 void setup()
 {
     Serial.begin(115200);
-    Serial.println("LF_Alpha_M1 MPU6050 Read Data Example");
+    Serial.println("LF_Alpha MPU6050 Read Data Example");
 
     // Initialize the MPU6050
     bool status = mpuSensor.begin();

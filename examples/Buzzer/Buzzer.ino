@@ -1,6 +1,6 @@
 /*
     LF_Alpha Buzzer Example
-    This example demonstrates how to initialize and use the LF_Alpha_M1 Buzzer.
+    This example demonstrates how to initialize and use the LF_Alpha Buzzer.
     available methods:
         -begin(); Initializes the buzzer.
         -write(LOGIC); HIGH or LOW
@@ -15,7 +15,7 @@ LF_Alpha_Buzzer Buzzer;
 
 void setup(){
     Serial.begin(115200);
-    Serial.println("LF_Alpha_M1 Buzzer Example");
+    Serial.println("LF_Alpha Buzzer Example");
 
     // Initialize the buzzer
     Buzzer.begin();

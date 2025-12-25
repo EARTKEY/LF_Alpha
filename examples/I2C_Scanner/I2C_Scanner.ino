@@ -1,6 +1,6 @@
 /*
     LF_Alpha I2C Scanner Example
-    This example demonstrates how to initialize and use the LF_Alpha_M1 I2C Scanner.
+    This example demonstrates how to initialize and use the LF_Alpha I2C Scanner.
     It scans the I2C bus for devices and returns their addresses and number of devices found.
 
     available methods:
@@ -17,7 +17,7 @@ LF_Alpha_I2CScanner scanner;
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("LF_Alpha_M1 I2C Scanner Example");
+    Serial.println("LF_Alpha I2C Scanner Example");
 
     // Start the I2C Scanner
     scanner.scan();

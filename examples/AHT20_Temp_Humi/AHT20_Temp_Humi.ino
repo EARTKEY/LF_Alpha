@@ -1,6 +1,6 @@
 /*
     LF_Alpha AHT20 Temperature and Humidity Sensor Example
-    This example shows how to use the AHT20 temperature and humidity sensor on the LF_Alpha_M1.
+    This example shows how to use the AHT20 temperature and humidity sensor on the LF_Alpha.
     available methods:
         -begin(); Initializes the AHT20 sensor.
         -readTempC(); Reads the temperature value in Celsius from the sensor.
@@ -17,7 +17,7 @@ LF_Alpha_AHT20 ahtSensor;
 void setup()
 {
     Serial.begin(115200);
-    Serial.println("LF_Alpha_M1 AHT20 Temperature and Humidity Sensor Example");
+    Serial.println("LF_Alpha AHT20 Temperature and Humidity Sensor Example");
     
     // Initialize the AHT20 sensor
     bool status = ahtSensor.begin();

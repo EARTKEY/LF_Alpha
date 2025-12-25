@@ -1,6 +1,6 @@
 /*
     LF_Alpha APDS9960 Gesture Sensor Example
-    This example shows how to use the gesture sensor on the LF_Alpha_M1.
+    This example shows how to use the gesture sensor on the LF_Alpha.
     available methods:
         -begin(); Initializes the gesture sensor.
         -enableGesture(); Enables the gesture sensor.
@@ -11,8 +11,6 @@
         -setGestureOffsets(up, down, left, right); Sets the gesture offsets.
         -readGesture(); Reads the gesture data from the sensor.
         -end(); De-initializes the gesture sensor.
-
-        Note: For more information and more methods refer the documentation.
 */
 
 #include <LF_Alpha.h>
@@ -23,7 +21,7 @@ LF_Alpha_APDS9960 gestureSensor;
 void setup()
 {
     Serial.begin(115200);
-    Serial.println("LF_Alpha_M1 Gesture Sensor Example");
+    Serial.println("LF_Alpha Gesture Sensor Example");
 
     // Initialize the gesture sensor
     bool status = gestureSensor.begin();

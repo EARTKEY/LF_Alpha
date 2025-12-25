@@ -1,6 +1,6 @@
 /*
     LF_Alpha UserLEDs Example
-    This example demonstrates how to initialize and use the LF_Alpha_M1 UserLEDs.
+    This example demonstrates how to initialize and use the LF_Alpha UserLEDs.
     available methods:
         -begin(); Initializes the UserLEDs.
         -blink(); Blinks the UserLEDs.
@@ -17,7 +17,7 @@ LF_Alpha_userLEDs userLEDs;
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("LF_Alpha_M1 UserLEDs Example");
+  Serial.println("LF_Alpha UserLEDs Example");
 
   // Initialize the userLEDs
   userLEDs.begin(userLED1, userLED2);
