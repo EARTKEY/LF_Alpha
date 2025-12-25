@@ -1,6 +1,6 @@
 /*
     LF_Alpha RGB LEDs Rainbow Example
-    This example demonstrates how to initialize and use the LF_Alpha_M1 RGB LEDs.
+    This example demonstrates how to initialize and use the LF_Alpha RGB LEDs.
     available methods:
     available methods:
         -begin(); Initializes the RGB LEDs.
@@ -22,7 +22,7 @@ LF_Alpha_rgbLEDs rgbLEDs;
 
 void setup(){
     Serial.begin(115200);
-    Serial.println("LF_Alpha_M1 RGB LEDs Rainbow Example");
+    Serial.println("LF_Alpha RGB LEDs Rainbow Example");
 
     // Initialize the RGB LEDs
     rgbLEDs.begin();

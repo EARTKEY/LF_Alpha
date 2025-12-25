@@ -1,6 +1,6 @@
 /*
     LF_Alpha OLED Display Example
-    This example shows how to use the OLED display on the LF_Alpha_M1.
+    This example shows how to use the OLED display on the LF_Alpha.
     available methods:
         -begin(); Initializes the OLED display.
         -clearDisplay(); Clears the OLED display.
@@ -29,7 +29,7 @@ LF_Alpha_OLED OLED;
 void setup()
 {
   Serial.begin(115200);
-  Serial.println("LF_Alpha_M1 OLED Display Example");
+  Serial.println("LF_Alpha OLED Display Example");
 
   // Initialize the OLED display
   OLED.begin();

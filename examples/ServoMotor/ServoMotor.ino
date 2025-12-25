@@ -1,6 +1,6 @@
 /*
     LF_Alpha Servo Motor Example
-    This example shows how to use the servo motor on the LF_Alpha_M1.
+    This example shows how to use the servo motor on the LF_Alpha.
     available methods:
         -begin(); Initializes the servo motor.
         -write(ANGLE); Sets the servo motor angle to the specified value.
@@ -17,7 +17,7 @@ LF_Alpha_Servo servoMotor;
 void setup()
 {
     Serial.begin(115200);
-    Serial.println("LF_Alpha_M1 Servo Motor Example");
+    Serial.println("LF_Alpha Servo Motor Example");
 
     // Initialize the servo motor
     servoMotor.begin();

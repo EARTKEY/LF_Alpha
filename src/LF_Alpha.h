@@ -1,7 +1,7 @@
 /*
  * LF_Alpha Embedded Firmware Library
  * Copyright (c) 2025 Linked_Frequency
- * Authors: ----------------------[Your Name]----------------
+ * Authors: E-ARTKEY Inovations Pvt. Ltd.
  * 
  * Licensed under the MIT License (see LICENSE.md)
  * 

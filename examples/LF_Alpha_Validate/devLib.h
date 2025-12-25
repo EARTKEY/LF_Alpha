@@ -52,7 +52,7 @@ void WiFi_HTTP_Testing(void);
 void systemInit(void) {
   // Initialize Serial Monitor
   Serial.begin(115200);
-  Serial.println("__ Welcome to the LF_ALPHA All Test __");
+  Serial.println("__ Welcome to the LF_ALPHA All Peripherals Testing Process.. __");
   delay(1000);
 
   testResult &= ~(1 << 0);

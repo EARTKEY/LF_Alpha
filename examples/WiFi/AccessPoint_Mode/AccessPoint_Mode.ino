@@ -21,8 +21,8 @@
 LF_Alpha_WiFi wifi;
 
 // configurations
-#define AP_SSID             "MyAccessPoint"
-#define AP_PASSWORD         "MyPassword"
+#define AP_SSID             "LF_ALpha_AP"
+#define AP_PASSWORD         "LF_Alpha@123"
 
 void setup()
 {

@@ -1,9 +1,22 @@
+/*
+    LF_Alpha APDS9960 Color Sensor Example
+    This example shows how to use the color sensor on the LF_Alpha.
+    available methods:
+        -begin(); Initializes the color sensor.
+        -enableColor(); Enables the color sensor.
+        -colorDataReady(); Checks if color data is ready.
+        -readColors(&red, &green, &blue, &clear); Reads color data from the sensor.
+        -getColorName(red, green, blue, clear); Returns a human-readable color name using simple heuristics.
+        -getColorNameHSV(red, green, blue, clear); Alternative method converting to HSV and returning a color name.
+        -end(); De-initializes the color sensor.
+*/
+
 #include <LF_Alpha.h>
 
 // Create an instance of LF_Alpha_APDS9960
 LF_Alpha_APDS9960 colorSensor;
 
-// Color name detection function
+// Color name detection function 
 String getColorName(uint16_t red, uint16_t green, uint16_t blue, uint16_t clear);
 
 // Alternative: More detailed color detection with HSV conversion

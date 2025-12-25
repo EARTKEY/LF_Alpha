@@ -1,7 +1,11 @@
 /*
-The LF_Alpha_M1.cpp file contains the implementation of various classes used in the LF Alpha Mark 1 firmware.
-
-
+    The LF_Alpha.cpp is the source file for the LF_Alpha library, which provides
+    functionalities to interact with various hardware components of the LF_Alpha
+    development board, such as buzzers, user LEDs, buttons, ultrasonic sensors,
+    potentiometers, and RGB LEDs.
+    
+    This file contains the implementation of the classes and methods declared
+    in the LF_Alpha.h header file.
 */
 
 // Include the Header File

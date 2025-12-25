@@ -1,6 +1,6 @@
 /*
     LF_Alpha Potentiometer Example
-    This example demonstrates how to initialize and use the LF_Alpha_M1 Potentiometer.
+    This example demonstrates how to initialize and use the LF_Alpha Potentiometer.
     available methods:
         -begin(); Initializes the Potentiometer.
         -read(); Reads the current value of the potentiometer (0-1023 for 10-bit ADC resolution).
@@ -19,7 +19,7 @@ LF_Alpha_resPot potentiometer;
 
 void setup(){
     Serial.begin(115200);
-    Serial.println("LF_Alpha_M1 Potentiometer Example");
+    Serial.println("LF_Alpha Potentiometer Example");
 
     // Initialize the Potentiometer
     potentiometer.begin();
