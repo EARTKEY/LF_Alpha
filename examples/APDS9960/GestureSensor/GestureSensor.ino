@@ -59,6 +59,4 @@ void loop()
     {
         Serial.println("Right");
     }
-
-    delay(100);
 }

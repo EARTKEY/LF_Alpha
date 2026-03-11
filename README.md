@@ -14,6 +14,7 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
+- [Code Uploading Steps](#code-uploading-steps)
 - [API Reference](#api-reference)
 - [Hardware Configuration](#hardware-configuration)
 - [Third-Party Libraries](#third-party-libraries)
@@ -139,6 +140,46 @@ Follow the steps below to run the validation routine:
 
 10. **Review the Results:**
     Once all tests are completed, the final validation result will be displayed on the Serial Monitor/OLED.
+
+---
+
+## Code Uploading Steps
+
+Follow these steps to upload any code to the **LF_Alpha Kit** using the Arduino IDE:
+
+### Step 1: Connect the Board
+
+Plug the **USB Type-C** cable into the LF_Alpha board and the **USB Type-A** end into your computer.
+
+<img src="assets/images/step1_connect_cable.png" alt="Step 1 – Connect the USB Cable" width="500">
+
+### Step 2: Open Serial Monitor
+
+Open the **Serial Monitor** in the Arduino IDE and set the baud rate to **115200**.
+
+<img src="assets/images/step2_serial_monitor.png" alt="Step 2 – Open Serial Monitor" width="500">
+
+### Step 3: Enter Programming Mode
+
+Slide the mode switch to the **PROG** position, then press the **RESET** button. Observe the Serial Monitor for the **"waiting for download"** message.
+
+<img src="assets/images/step3a_prog_mode.png" alt="Step 3a – Slide switch to PROG mode and Press RESET button" width="500">
+
+<img src="assets/images/step3b_waiting_for_download.png" alt="Step 3b – waiting for download message on Serial Monitor" width="500">
+
+### Step 4: Upload the Code
+
+Once you see the *"waiting for download"* message, **close the Serial Monitor**. Verify your board configuration — select **USB-UART0 (HARDWARE CDC)** as the upload port — and click the **Upload** button.
+
+<img src="assets/images/step4_upload_code.png" alt="Step 4 – Board configuration and upload" width="500">
+
+### Step 5: Enter Execution Mode
+
+After the code is uploaded successfully, switch the mode slider to **EXE** (Execution) position and press the **RESET** button once again. Your code will now start running on the board.
+
+> **Note:** Always remember to switch back to **EXE** mode after uploading. The board will not run your code while in PROG mode.
+
+---
 
 ### Example 1: Buzzer Control
 
