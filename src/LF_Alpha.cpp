@@ -1554,7 +1554,7 @@ String LF_Alpha_RTC::getDayName(void)
     int J = Y / 100;
     int h = (q + (13 * (m + 1)) / 5 + K + (K / 4) + (J / 4) + (5 * J)) % 7;
     int dayOfWeek = ((h + 5) % 7); // Convert to 0=Sunday, ..., 6=Saturday
-    return String(dayNames[dayOfWeek]);
+    return String(dayNames[dayOfWeek + 1]);
 }
 
 String LF_Alpha_RTC::getMonthName(void)
@@ -4494,17 +4494,20 @@ uint8_t LF_Alpha_APDS9960 ::readGesture()
         if (!gestureValid())
             return 0;
 
-        delay(30);
         toRead = this->read8(APDS9960_GFLVL);
 
         // produces sideffects needed for readGesture to work
         this->read(APDS9960_GFIFO_U, buf, toRead);
 
-        if (abs((int)buf[0] - (int)buf[1]) > 13)
-            up_down_diff += (int)buf[0] - (int)buf[1];
+        // Process ALL 4-byte datasets [U, D, L, R] in the FIFO buffer
+        for (int i = 0; i < toRead; i += 4)
+        {
+            if (abs((int)buf[i] - (int)buf[i + 1]) > 13)
+                up_down_diff += (int)buf[i] - (int)buf[i + 1];
 
-        if (abs((int)buf[2] - (int)buf[3]) > 13)
-            left_right_diff += (int)buf[2] - (int)buf[3];
+            if (abs((int)buf[i + 2] - (int)buf[i + 3]) > 13)
+                left_right_diff += (int)buf[i + 2] - (int)buf[i + 3];
+        }
 
         if (up_down_diff != 0)
         {
@@ -4553,7 +4556,7 @@ uint8_t LF_Alpha_APDS9960 ::readGesture()
         if (up_down_diff != 0 || left_right_diff != 0)
             t = millis();
 
-        if (gestureReceived || millis() - t > 300)
+        if (gestureReceived || millis() - t > 150)
         {
             resetCounts();
             return gestureReceived;
