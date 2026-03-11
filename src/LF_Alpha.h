@@ -2396,7 +2396,7 @@ public:
         serverUrl = "";
     }
 
-    bool begin(void) { /* do nothing here */}
+    bool begin(void) { /* do nothing here */ return false;}
 
     bool configure(const String &url);
     bool begin(const String &url);

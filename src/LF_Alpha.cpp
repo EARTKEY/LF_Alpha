@@ -5233,7 +5233,7 @@ void LF_Alpha_WiFi ::configure(wifi_mode_t mode)
 
 uint8_t LF_Alpha_WiFi ::getCurrentMode()
 {
-    WiFi.getMode();
+    return WiFi.getMode();
 }
 
 void LF_Alpha_WiFi ::connect(const String &SSID, const String &PASSWORD)
