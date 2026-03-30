@@ -1034,8 +1034,8 @@ bool LF_Alpha_Servo::begin(uint servoGPIO)
     if (servoGPIO == servoPin)
     {
 
-        if (this->attach(servoGPIO, 1000, 2000) != 0)
-        { // Use 1000-2000us range like working example
+        if (this->attach(servoGPIO, DEFAULT_uS_LOW, DEFAULT_uS_HIGH) != 0)
+        { // Use DEFAULT_uS_LOW-DEFAULT_uS_HIGH range like working example
             return true;
         }
         else
@@ -1045,10 +1045,11 @@ bool LF_Alpha_Servo::begin(uint servoGPIO)
     }
     else
     {
-        if (this->attach(servoGPIO, 1000, 2000) != 0)
-        {                                  // Use 1000-2000us range
-            this->writeMicroseconds(1500); // Center position
+        if (this->attach(servoGPIO, DEFAULT_uS_LOW, DEFAULT_uS_HIGH) != 0)
+        {                                  
+            this->writeMicroseconds((DEFAULT_uS_LOW + DEFAULT_uS_HIGH) / 2); // Center position
             return true;
+        }
         }
         else
         {
