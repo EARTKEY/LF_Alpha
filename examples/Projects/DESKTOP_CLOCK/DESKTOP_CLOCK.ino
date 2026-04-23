@@ -83,6 +83,88 @@ bool lastUp = HIGH;
 bool lastDown = HIGH;
 bool lastBack = HIGH;
 
+
+// -------------------- SETUP FUNCTION --------------------
+// Initializes serial communication, OLED, and RTC module.
+void setup() {
+  // Initialize serial communication at 115200 baud rate for debugging.
+  Serial.begin(SERIAL_MONITOR);
+  Buzzer.begin();
+  rgbLEDs.begin();
+  // Initialize the OLED display.
+  OLED.begin();
+  // Display the welcome screen.
+  showWelcome();
+
+  // Inform user about RTC initialization.
+  Serial.println("Initializing RTC...");
+
+  // Attempt to initialize the RTC module.
+  if (!RTC.begin()) {
+    // If RTC initialization fails, display an error and halt execution.
+    showError("RTC Init Failed");
+    while (1)
+      ;
+  }
+
+  // Confirm successful RTC initialization.
+  Serial.println("RTC Initialized Successfully");
+  Serial.println("RTC Running Correctly");
+  Serial.println("System Ready ");
+
+  // Set initial remaining time for Pomodoro to work time.
+  remainingTime = workTime;
+}
+
+
+// -------------------- MAIN LOOP --------------------
+// The main program loop, continuously handles button input, updates timer, and displays content.
+void loop() {
+  // Continuously check and handle button presses.
+  handleButtons();
+
+  // Update Pomodoro timer if it's running and one second has passed.
+  if (isRunning && millis() - lastUpdate >= 1000) {
+    lastUpdate = millis();
+
+    //  TOTAL SESSION CHECK FIRST
+    if (totalRemaining <= 0) {
+      isRunning = false;
+      Serial.println("\n[POMODORO] SESSION FINISHED");
+
+      playAlert(3);  //session
+      return;
+    }
+
+    totalRemaining--;
+
+    // STOP if session ended
+    if (!isRunning) return;
+
+    //  WORK / BREAK TIMER
+    if (remainingTime <= 0) {
+
+      if (isWorkMode) {
+        playAlert(1);
+      } else {
+        playAlert(2);
+      }
+
+      isWorkMode = !isWorkMode;
+      remainingTime = isWorkMode ? workTime : breakTime;
+    }
+
+    remainingTime--;
+  }
+
+  // Display content based on the current operating mode.
+  if (mode == 0) showClock();
+  else if (mode == 1) showPomodoro();
+  else showSettings();  // For modes 2, 3, 4 (settings).
+
+  delay(100);  // Small delay to prevent busy-waiting and reduce CPU usage.
+}
+
 // -------------------- WELCOME SCREEN --------------------
 // Displays a welcome message on the serial monitor and OLED display upon system startup.
 void showWelcome() {
@@ -394,39 +476,6 @@ void showSettings() {
   OLED.display();
 }
 
-// -------------------- SETUP FUNCTION --------------------
-// Initializes serial communication, OLED, and RTC module.
-void setup() {
-  // Initialize serial communication at 115200 baud rate for debugging.
-  Serial.begin(SERIAL_MONITOR);
-  Buzzer.begin();
-  rgbLEDs.begin();
-
-
-  // Initialize the OLED display.
-  OLED.begin();
-  // Display the welcome screen.
-  showWelcome();
-
-  // Inform user about RTC initialization.
-  Serial.println("Initializing RTC...");
-
-  // Attempt to initialize the RTC module.
-  if (!RTC.begin()) {
-    // If RTC initialization fails, display an error and halt execution.
-    showError("RTC Init Failed");
-    while (1)
-      ;
-  }
-
-  // Confirm successful RTC initialization.
-  Serial.println("RTC Initialized Successfully");
-  Serial.println("RTC Running Correctly");
-  Serial.println("System Ready ");
-
-  // Set initial remaining time for Pomodoro to work time.
-  remainingTime = workTime;
-}
 
 // -------------------- BUTTON HANDLER --------------------
 // Manages button presses and triggers corresponding actions based on the current mode.
@@ -625,52 +674,4 @@ void playAlert(uint8_t type) {
     rgbLEDs.clear();
     rgbLEDs.show();
   }
-}
-
-// -------------------- MAIN LOOP --------------------
-// The main program loop, continuously handles button input, updates timer, and displays content.
-void loop() {
-  // Continuously check and handle button presses.
-  handleButtons();
-
-  // Update Pomodoro timer if it's running and one second has passed.
-  if (isRunning && millis() - lastUpdate >= 1000) {
-    lastUpdate = millis();
-
-    //  TOTAL SESSION CHECK FIRST
-    if (totalRemaining <= 0) {
-      isRunning = false;
-      Serial.println("\n[POMODORO] SESSION FINISHED");
-
-      playAlert(3);  //session
-      return;
-    }
-
-    totalRemaining--;
-
-    // STOP if session ended
-    if (!isRunning) return;
-
-    //  WORK / BREAK TIMER
-    if (remainingTime <= 0) {
-
-      if (isWorkMode) {
-        playAlert(1);
-      } else {
-        playAlert(2);
-      }
-
-      isWorkMode = !isWorkMode;
-      remainingTime = isWorkMode ? workTime : breakTime;
-    }
-
-    remainingTime--;
-  }
-
-  // Display content based on the current operating mode.
-  if (mode == 0) showClock();
-  else if (mode == 1) showPomodoro();
-  else showSettings();  // For modes 2, 3, 4 (settings).
-
-  delay(100);  // Small delay to prevent busy-waiting and reduce CPU usage.
 }
