@@ -39,7 +39,9 @@
 #include "lib/MPU6050/I2Cdev.h"
 #include "lib/MPU6050/helper_3dmath.h"
 #include "driver/gpio.h"
+#if !defined(ESP_IDF_VERSION) || ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 0, 0)
 #include "driver/rmt.h"
+#endif
 
 /*-------------GPIO configurations---------*/
 // Buzzer GPIO
@@ -973,8 +975,12 @@ class LF_Alpha_rgbLEDs
 protected:
 
 #if defined(ESP32)
+#if defined(ESP_IDF_VERSION) && ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+    rmt_data_t *rmtItems = nullptr; // RMT items buffer
+#else
     rmt_item32_t *rmtItems = nullptr; // RMT items buffer
     rmt_channel_t rmtChannel = RMT_CHANNEL_0; // Default RMT channel
+#endif
 #endif
 
 #ifdef NEO_KHZ400  // If 400 KHz NeoPixel support enabled...

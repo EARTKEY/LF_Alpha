@@ -322,6 +322,80 @@ static uint8_t gamma8(uint8_t x)
 }
 
 #if defined(ESP32)
+
+#if defined(ESP_IDF_VERSION) && ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+
+void LF_Alpha_rgbLEDs::espShow()
+{
+    if (!rmtItems || !pixels || numLEDs == 0)
+    {
+        return;
+    }
+
+#ifdef NEO_KHZ400
+    bool is800 = is800KHz;
+#else
+    bool is800 = true;
+#endif
+
+    int itemIdx = 0;
+    uint8_t bytesPerPixel = (wOffset == rOffset) ? 3 : 4;
+    uint32_t totalBytes = numLEDs * bytesPerPixel;
+
+    // Build RMT items
+    for (uint16_t i = 0; i < numLEDs; i++)
+    {
+        uint8_t *pixelPtr = &pixels[i * bytesPerPixel];
+
+        for (uint8_t byteNum = 0; byteNum < bytesPerPixel; byteNum++)
+        {
+            uint8_t pixelByte = pixelPtr[byteNum];
+
+            for (int bit = 7; bit >= 0; bit--)
+            {
+                if (pixelByte & (1 << bit))
+                {
+                    rmtItems[itemIdx].level0 = 1;
+                    rmtItems[itemIdx].duration0 = is800 ? 8 : 16;
+                    rmtItems[itemIdx].level1 = 0;
+                    rmtItems[itemIdx].duration1 = is800 ? 4 : 8;
+                }
+                else
+                {
+                    rmtItems[itemIdx].level0 = 1;
+                    rmtItems[itemIdx].duration0 = is800 ? 4 : 8;
+                    rmtItems[itemIdx].level1 = 0;
+                    rmtItems[itemIdx].duration1 = is800 ? 8 : 16;
+                }
+                itemIdx++;
+            }
+        }
+    }
+
+    rmtWrite(pin, rmtItems, totalBytes * 8, RMT_WAIT_FOR_EVER);
+}
+
+void LF_Alpha_rgbLEDs::espInit()
+{
+    // Deinit if already initialized to free the channel
+    rmtDeinit(pin);
+
+    // Initialize RMT TX mode on the specified pin with 1 memory block and 10MHz frequency
+    if (!rmtInit(pin, RMT_TX_MODE, RMT_MEM_NUM_BLOCKS_1, 10000000))
+    {
+        return;
+    }
+
+    // Calculate items needed
+    uint8_t bytesPerPixel = (wOffset == rOffset) ? 3 : 4;
+    int itemsNeeded = numLEDs * bytesPerPixel * 8;
+
+    // Allocate RMT items using standard malloc
+    rmtItems = (rmt_data_t *)malloc(itemsNeeded * sizeof(rmt_data_t));
+}
+
+#else // ESP_IDF_VERSION < 5.0.0
+
 void LF_Alpha_rgbLEDs::espShow()
 {
 
@@ -420,7 +494,9 @@ void LF_Alpha_rgbLEDs::espInit()
     }
 }
 
-#endif
+#endif // ESP_IDF_VERSION >= 5.0.0
+
+#endif // defined(ESP32)
 
 LF_Alpha_rgbLEDs::LF_Alpha_rgbLEDs(uint16_t n, int16_t pin, neoPixelType type)
     : begun(false), brightness(0), pixels(NULL), endTime(0), rmtItems(nullptr)
@@ -439,8 +515,10 @@ LF_Alpha_rgbLEDs::LF_Alpha_rgbLEDs(uint16_t n, int16_t pin, neoPixelType type)
     updateLength(n);  // This allocates pixels array and sets numBytes
     setPin(pin);      // Set the pin
 
+#if !defined(ESP_IDF_VERSION) || ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 0, 0)
     // Set default values
     rmtChannel = RMT_CHANNEL_0;
+#endif
 }
 
 void LF_Alpha_rgbLEDs ::setPin(int16_t p)
@@ -630,7 +708,11 @@ bool LF_Alpha_rgbLEDs::begin()
     // Clean up any existing RMT setup
     if (rmtItems)
     {
+#if defined(ESP_IDF_VERSION) && ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+        free(rmtItems);
+#else
         heap_caps_free(rmtItems);
+#endif
         rmtItems = nullptr;
     }
 
@@ -906,11 +988,19 @@ bool LF_Alpha_rgbLEDs::end()
 #ifdef ESP32
     if (rmtItems)
     {
+#if defined(ESP_IDF_VERSION) && ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+        free(rmtItems);
+#else
         heap_caps_free(rmtItems); // Use heap_caps_free instead of free
+#endif
         rmtItems = nullptr;
     }
+#if defined(ESP_IDF_VERSION) && ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+    rmtDeinit(pin);
+#else
     // Release RMT driver
     rmt_driver_uninstall(rmtChannel);
+#endif
 #endif
 
     if (pixels)
@@ -1050,7 +1140,6 @@ bool LF_Alpha_Servo::begin(uint servoGPIO)
             this->writeMicroseconds((DEFAULT_uS_LOW + DEFAULT_uS_HIGH) / 2); // Center position
             return true;
         }
-        }
         else
         {
             return false;
@@ -1151,8 +1240,12 @@ int LF_Alpha_Servo::attach(int pin, int min, int max)
 #ifdef ARDUINO_ARCH_ESP32
     // Use LEDC channel 0 for simplicity
     this->pwmChannel = 0;
+#if defined(ESP_ARDUINO_VERSION) && ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 0)
+    ledcAttach(this->pinNumber, REFRESH_CPS, this->timer_width);
+#else
     ledcSetup(this->pwmChannel, REFRESH_CPS, this->timer_width);
     ledcAttachPin(this->pinNumber, this->pwmChannel);
+#endif
     return this->pwmChannel + 1; // non-zero success
 #else
     // For non-ESP32 platforms, use the ESP32PWM fallback
@@ -1221,7 +1314,11 @@ void LF_Alpha_Servo::writeTicks(int value)
 
 #ifdef ESP32
     // Use LEDC directly
+#if defined(ESP_ARDUINO_VERSION) && ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 0)
+    ledcWrite(this->pinNumber, this->ticks);
+#else
     ledcWrite(this->pwmChannel, this->ticks);
+#endif
 #else
     // Fallback
     pwm.write(this->ticks);
